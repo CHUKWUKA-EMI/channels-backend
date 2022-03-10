@@ -1,0 +1,173 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Post {
+  id: String!
+  title: String!
+  slug: String!
+  content: String!
+  numberOfComments: Int!
+  numberOfLikes: Int!
+  imageUrl: String
+  user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Comment {
+  id: String!
+  content: String!
+  user: User!
+  postId: String!
+  numberOfLikes: Int!
+  numberOfReplies: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Like {
+  id: String!
+  value: Boolean!
+  user: User!
+  postId: String
+  commentId: String
+  replyId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Reply {
+  id: String!
+  content: String!
+  user: User!
+  numberOfLikes: Int!
+  commentId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type User {
+  id: String!
+  firstName: String!
+  lastName: String!
+  userName: String!
+  email: String!
+  password: String!
+  imageUrl: String
+  isVerified: Boolean!
+  userRole: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Query {
+  users: [User!]!
+  user(id: String!): User!
+  findByEmail(email: String!): User!
+  findByUserName(userName: String!): User!
+  posts: [Post!]!
+  post(id: String!): Post!
+  findAllByUser: [Post!]!
+  comments: [Comment!]!
+  comment(id: String!): Comment!
+  commentsByPost(postId: String!): [Comment!]!
+  likes: [Like!]!
+  postLikes(postId: String!): [Like!]!
+  commentLikes(commentId: String!): [Like!]!
+  replyLikes(replyId: String!): [Like!]!
+  replies: [Reply!]!
+  reply(id: String!): Reply!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: String!): User!
+  createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  removePost(id: String!): Post!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
+  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  removeComment(postId: String!, id: String!): Comment!
+  likePost(createLikeInput: CreateLikeInput!): String!
+  likeComment(createLikeInput: CreateLikeInput!): String!
+  likeReply(createLikeInput: CreateLikeInput!): String!
+  createReply(createReplyInput: CreateReplyInput!): Reply!
+  updateReply(updateReplyInput: UpdateReplyInput!): Reply!
+  removeReply(id: String!): Reply!
+}
+
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  userName: String!
+  email: String!
+  password: String!
+  imageUrl: String
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  userName: String
+  email: String
+  password: String
+  imageUrl: String
+}
+
+input CreatePostInput {
+  title: String!
+  content: String!
+  imageUrl: String
+}
+
+input UpdatePostInput {
+  title: String
+  content: String
+  imageUrl: String
+  id: String!
+}
+
+input CreateCommentInput {
+  content: String!
+  postId: String!
+}
+
+input UpdateCommentInput {
+  content: String!
+  postId: String
+  id: String!
+}
+
+input CreateLikeInput {
+  postId: String
+  commentId: String
+  replyId: String
+}
+
+input CreateReplyInput {
+  content: String!
+  commentId: String!
+}
+
+input UpdateReplyInput {
+  content: String!
+  commentId: String
+  id: String!
+}
+
+type Subscription {
+  postAdded: Post!
+  commentAdded(postId: String!): Comment!
+  commentUpdated(postId: String!): Comment!
+  postLiked(postId: String!): String!
+  commentLiked(commentId: String!): String!
+  replyLiked(replyId: String!): String!
+  replyAdded(commentId: String!): Reply!
+}
